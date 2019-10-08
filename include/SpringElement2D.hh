@@ -26,7 +26,8 @@ namespace AOPT {
         inline virtual double f(const Vec &_x, const Vec &_coeffs) override {
             //------------------------------------------------------//
             //Todo: implement the function f(x) = 1/2 * k * ((x[0] - x[2])^2 + (x[1] - x[3])^2)
-
+            double result = 1./2. * _coeffs[0] * ((_x[0] - _x[2])*(_x[0] - _x[2]) + (_x[1] - _x[3])*(_x[1] - _x[3]));
+            return result;
             //------------------------------------------------------//
             return 0.;
         }

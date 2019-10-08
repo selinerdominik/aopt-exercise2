@@ -110,6 +110,37 @@ namespace AOPT {
         //first, add vertices
         //then, add edges
 
+        // Adding points
+        for(int i = 0; i <= n_grid_x_; i++) {
+            for(int j = 0; j <= n_grid_y_; j++) {
+                Eigen::Vector2d p;
+                p << i, j;
+                sg_.add_vertex(p);
+            }
+        }
+
+        // Adding edges
+        int plt; // Point left top
+        int prt; // Point right top
+        int plb; // Point left bottom
+        int prb; // Point right bottom
+
+        for(int i = 0; i < n_grid_x_; i++) { // For every column
+            sg_.add_edge(i,i+1); // Edge to the top of column
+            for (int j = 0; j < n_grid_y_; j++) { // For every row
+                plt = (j * (n_grid_x_ + 1)) + i;
+                prt = plt + 1;
+                plb = plt + (n_grid_x_ + 1);
+                prb = plb + 1;
+                if(i == 0) {
+                    sg_.add_edge(plt,plb); // Edge to the left of row
+                }
+                sg_.add_edge(plt,prb);
+                sg_.add_edge(prt,plb);
+                sg_.add_edge(prt,prb);
+                sg_.add_edge(plb,prb);
+            }
+        }
 
         //------------------------------------------------------//
     }
