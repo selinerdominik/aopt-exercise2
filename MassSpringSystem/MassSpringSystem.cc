@@ -135,8 +135,8 @@ namespace AOPT {
                 if(i == 0) {
                     sg_.add_edge(plt,plb); // Edge to the left of row
                 }
-                sg_.add_edge(plt,prb);
-                sg_.add_edge(prt,plb);
+                sg_.add_edge(plt,prb, 1., sqrt(2.));
+                sg_.add_edge(prt,plb, 1., sqrt(2.));
                 sg_.add_edge(prt,prb);
                 sg_.add_edge(plb,prb);
             }
