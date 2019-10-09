@@ -59,7 +59,14 @@ namespace AOPT {
 
             //------------------------------------------------------//
             //TODO: assemble local gradient vector to the global one
-
+            for (int i = 0; i < elements_.size(); i++) {
+                Vec nodes(4);
+                nodes[0] = _x[elements_[i].first*2];
+                nodes[1] = _x[elements_[i].first*2+1];
+                nodes[2] = _x[elements_[i].second*2];
+                nodes[3] = _x[elements_[i].second*2+1];
+                func_.grad_f(nodes, coeff, _g);
+            }
             //------------------------------------------------------//
         }
 
@@ -71,7 +78,14 @@ namespace AOPT {
 
             //------------------------------------------------------//
             //TODO: assemble local hessian matrix to the global one
-
+            for (int i = 0; i < elements_.size(); i++) {
+                Vec nodes(4);
+                nodes[0] = _x[elements_[i].first*2];
+                nodes[1] = _x[elements_[i].first*2+1];
+                nodes[2] = _x[elements_[i].second*2];
+                nodes[3] = _x[elements_[i].second*2+1];
+                func_.hess_f(nodes, coeff, _h);
+            }
             //------------------------------------------------------//
         }
 
