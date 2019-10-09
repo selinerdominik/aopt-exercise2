@@ -25,6 +25,26 @@ namespace AOPT {
                 //Hint: randomly set the coordinates of the vertices,
                 //see if all the eigenvalues of the hessian matrix (Dense) are >=0
 
+                int order[n_vertices];
+                for(int i = 0; i<int(n_vertices); i++) {
+                    order[i] = i;
+                }
+
+                std::random_shuffle(order, order + int(n_vertices));
+
+                for(size_t i=0; i<n_vertices; ++i) {
+                    points[2*i] = sg_.point(order[i])[0];
+                    points[2*i+1] = sg_.point(order[i])[1];
+                }
+
+                Mat m;
+
+                msp.eval_hessian(points, m);
+
+                std::cout << m;
+
+                // Todo: Check eigenvalues
+
                 //------------------------------------------------------//
             } else if(_sparsity_type == SPARSE) {
                 //------------------------------------------------------//
