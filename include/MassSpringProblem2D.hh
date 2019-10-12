@@ -45,6 +45,10 @@ namespace AOPT {
                 nodes[1] = _x[elements_[i].first*2+1];
                 nodes[2] = _x[elements_[i].second*2];
                 nodes[3] = _x[elements_[i].second*2+1];
+
+                coeff[0] = ks_[i];
+                coeff[1] = ls_[i];
+
                 energy += func_.f(nodes, coeff);
             }
             //------------------------------------------------------//
@@ -65,6 +69,10 @@ namespace AOPT {
                 nodes[1] = _x[elements_[i].first*2+1];
                 nodes[2] = _x[elements_[i].second*2];
                 nodes[3] = _x[elements_[i].second*2+1];
+
+                coeff[0] = ks_[i];
+                coeff[1] = ls_[i];
+
                 func_.grad_f(nodes, coeff, _g);
             }
             //------------------------------------------------------//
