@@ -38,10 +38,10 @@ namespace AOPT {
         inline virtual void grad_f(const Vec &_x, const Vec &_coeffs, Vec &_g) override {
             //------------------------------------------------------//
             //Todo: implement the gradient and store in _g
-            _g[0] = _coeffs[0] * (_x[0]-_x[2]);
-            _g[1] = _coeffs[0] * (_x[1]-_x[3]);
-            _g[2] = _coeffs[0] * (_x[0]-_x[2]);
-            _g[3] = _coeffs[0] * (_x[1]-_x[3]);
+            _g[0] += _coeffs[0] * (_x[0]-_x[2]);
+            _g[1] += _coeffs[0] * (_x[1]-_x[3]);
+            _g[2] += _coeffs[0] * (_x[0]-_x[2]);
+            _g[3] += _coeffs[0] * (_x[1]-_x[3]);
             //------------------------------------------------------//
         }
 
