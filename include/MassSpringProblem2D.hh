@@ -87,11 +87,19 @@ namespace AOPT {
             //------------------------------------------------------//
             //TODO: assemble local hessian matrix to the global one
             for (int i = 0; i < elements_.size(); i++) {
-                Vec nodes(4);
+                Vec nodes(8);
                 nodes[0] = _x[elements_[i].first*2];
                 nodes[1] = _x[elements_[i].first*2+1];
                 nodes[2] = _x[elements_[i].second*2];
                 nodes[3] = _x[elements_[i].second*2+1];
+                nodes[4] = elements_[i].first*2;
+                nodes[5] = elements_[i].first*2+1;
+                nodes[6] = elements_[i].second*2;
+                nodes[7] = elements_[i].second*2+1;
+
+                coeff[0] = ks_[i];
+                coeff[1] = ls_[i];
+
                 func_.hess_f(nodes, coeff, _h);
             }
             //------------------------------------------------------//

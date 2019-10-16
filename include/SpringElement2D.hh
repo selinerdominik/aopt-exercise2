@@ -51,35 +51,9 @@ namespace AOPT {
         inline virtual void hess_f(const Vec &_x, const Vec &_coeffs, Mat &_H) override {
             //------------------------------------------------------//
             //Todo: implement the hessian matrix and store in _H
-
-            Mat temp;
-            temp = Mat::Zero(4, 4);
-            temp(0,0) = 2 * _coeffs[0]*(((_x[0]-_x[2])*(_x[0]-_x[2]) + (_x[1]-_x[3])*(_x[1]-_x[3])))
-                    + 4 * (_x[0]-_x[2]) *(_x[0]-_x[2]) * _coeffs[0];
-            temp(1,0) = 4 * _coeffs[0]*(_x[0]-_x[2])*(_x[1]-_x[3]);
-            temp(2,0) = - 2 * _coeffs[0]*(((_x[0]-_x[2])*(_x[0]-_x[2]) + (_x[1]-_x[3])*(_x[1]-_x[3])))
-                    - 4 * (_x[0] - _x[2]) * (_x[0] - _x[2]) * _coeffs[0];
-            temp(3,0) = - 4 * _coeffs[0]*(_x[0]-_x[2])*(_x[1]-_x[3]);
-
-            temp(0,1) = temp(1,0);
-            temp(1,1) = temp(0,0);
-            temp(2,1) = temp(3,0);
-            temp(3,1) = temp(2,0);
-
-            temp(0,2) = - temp(0,0);
-            temp(1,2) = - temp(1,0);
-            temp(2,2) = - temp(2,0);
-            temp(3,2) = - temp(3,0);
-
-
-            temp(0,3) = - temp(0,1);
-            temp(1,3) = - temp(1,1);
-            temp(2,3) = - temp(2,1);
-            temp(3,3) = - temp(3,1);
-
             for(int i = 0; i <= 3; i++) {
                 for(int j = 0; j <= 3; j++) {
-                    _H(_x[3+i],_x[3+j]) += temp(i,j);
+                    _H(_x[4+i],_x[4+j]) += (i%2+j%2)?_coeffs[0]:1;
                 }
             }
             //------------------------------------------------------//

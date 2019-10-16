@@ -1,5 +1,6 @@
 #include <SpringElement2DWithLength.hh>
 #include "MassSpringSystem.hh"
+#include <random>
 
 namespace AOPT {
 
@@ -30,6 +31,7 @@ namespace AOPT {
                     order[i] = i;
                 }
 
+                std::srand(time(0));
                 std::random_shuffle(order, order + int(n_vertices));
 
                 for(size_t i=0; i<n_vertices; ++i) {
@@ -38,12 +40,10 @@ namespace AOPT {
                 }
 
                 Mat m;
-
                 msp.eval_hessian(points, m);
 
-                std::cout << m;
-
-                // Todo: Check eigenvalues
+                std::cout << "Eigenvalues:";
+                std::cout << m.eigenvalues();
 
                 //------------------------------------------------------//
             } else if(_sparsity_type == SPARSE) {
