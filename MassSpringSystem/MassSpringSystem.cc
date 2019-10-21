@@ -42,8 +42,25 @@ namespace AOPT {
                 Mat m;
                 msp.eval_hessian(points, m);
 
-                std::cout << "Eigenvalues:";
-                std::cout << m.eigenvalues();
+                // std::cout << "Eigenvalues:";
+                // std::cout << m.eigenvalues();
+                // std::cout << std::endl;
+
+                Eigen::VectorXcd eivals = m.eigenvalues();
+
+                bool convex = true;
+
+                for(int i = 0; i < eivals.rows(); i++) {
+                    if(eivals[i].real() < 0.) {
+                        convex = false;
+                    }
+                }
+
+                if(convex) {
+                    std::cout << "Problem is Convex" << std::endl;
+                } else {
+                    std::cout << "Problem is Non-convex" << std::endl;
+                }
 
                 //------------------------------------------------------//
             } else if(_sparsity_type == SPARSE) {
