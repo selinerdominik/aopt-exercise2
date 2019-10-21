@@ -40,10 +40,10 @@ namespace AOPT {
         inline virtual void grad_f(const Vec &_x, const Vec &_coeffs, Vec &_g) override {
             //------------------------------------------------------//
             //Todo: implement the gradient and store in _g
-            _g[0] += _coeffs[0] * ((_x[0]-_x[2])*(_x[0]-_x[2]) + (_x[1]-_x[3]) * (_x[1]-_x[3]) - _coeffs[1] * _coeffs[1]) * 2 * (_x[0] - _x[2]);
-            _g[1] += _coeffs[0] * ((_x[0]-_x[2])*(_x[0]-_x[2]) + (_x[1]-_x[3]) * (_x[1]-_x[3]) - _coeffs[1] * _coeffs[1]) * 2 * (_x[1] - _x[3]);
-            _g[2] += - _coeffs[0] * ((_x[0]-_x[2])*(_x[0]-_x[2]) + (_x[1]-_x[3]) * (_x[1]-_x[3]) - _coeffs[1] * _coeffs[1]) * 2 * (_x[0] - _x[2]);
-            _g[3] += - _coeffs[0] * ((_x[0]-_x[2])*(_x[0]-_x[2]) + (_x[1]-_x[3]) * (_x[1]-_x[3]) - _coeffs[1] * _coeffs[1]) * 2 * (_x[1] - _x[3]);
+            _g[0] += _coeffs[0] * (_x[0]-_x[2]);
+            _g[1] += _coeffs[0] * (_x[1]-_x[3]);
+            _g[2] += _coeffs[0] * (_x[0]-_x[2]);
+            _g[3] += _coeffs[0] * (_x[1]-_x[3]);
             //------------------------------------------------------//
         }
 
@@ -53,7 +53,11 @@ namespace AOPT {
         inline virtual void hess_f(const Vec &_x, const Vec &_coeffs, Mat &_H) override {
             //------------------------------------------------------//
             //Todo: implement the hessian matrix and store in _H
-
+            for(int i = 0; i <= 3; i++) {
+                for(int j = 0; j <= 3; j++) {
+                    _H(_x[4+i],_x[4+j]) += (i%2+j%2)?_coeffs[0]:1;
+                }
+            }
             //------------------------------------------------------//
         }
 
