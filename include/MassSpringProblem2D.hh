@@ -40,16 +40,16 @@ namespace AOPT {
             //------------------------------------------------------//
             //TODO: assemble function values of all the elements (springs)
             for (int i = 0; i < elements_.size(); i++) {
-                Vec nodes(4);
-                nodes[0] = _x[elements_[i].first*2];
-                nodes[1] = _x[elements_[i].first*2+1];
-                nodes[2] = _x[elements_[i].second*2];
-                nodes[3] = _x[elements_[i].second*2+1];
+                xe_.setZero();
+                xe_[0] = _x[elements_[i].first*2];
+                xe_[1] = _x[elements_[i].first*2+1];
+                xe_[2] = _x[elements_[i].second*2];
+                xe_[3] = _x[elements_[i].second*2+1];
 
                 coeff[0] = ks_[i];
                 coeff[1] = ls_[i];
 
-                energy += func_.f(nodes, coeff);
+                energy += func_.f(xe_, coeff);
             }
             //------------------------------------------------------//
 
@@ -64,16 +64,19 @@ namespace AOPT {
             //------------------------------------------------------//
             //TODO: assemble local gradient vector to the global one
             for (int i = 0; i < elements_.size(); i++) {
-                Vec nodes(4);
-                nodes[0] = _x[elements_[i].first*2];
-                nodes[1] = _x[elements_[i].first*2+1];
-                nodes[2] = _x[elements_[i].second*2];
-                nodes[3] = _x[elements_[i].second*2+1];
+                ge_.setZero();
+                xe_.setZero();
+                xe_[0] = _x[elements_[i].first*2];
+                xe_[1] = _x[elements_[i].first*2+1];
+                xe_[2] = _x[elements_[i].second*2];
+                xe_[3] = _x[elements_[i].second*2+1];
 
                 coeff[0] = ks_[i];
                 coeff[1] = ls_[i];
 
-                func_.grad_f(nodes, coeff, _g);
+                func_.grad_f(xe_, coeff, ge_);
+
+                _g += ge_;
             }
             //------------------------------------------------------//
         }
@@ -87,12 +90,12 @@ namespace AOPT {
             //------------------------------------------------------//
             //TODO: assemble local hessian matrix to the global one
             for (int i = 0; i < elements_.size(); i++) {
-                Vec nodes(4);
+                xe_.setZero();
                 he_.setZero();
-                nodes[0] = _x[elements_[i].first*2];
-                nodes[1] = _x[elements_[i].first*2+1];
-                nodes[2] = _x[elements_[i].second*2];
-                nodes[3] = _x[elements_[i].second*2+1];
+                xe_[0] = _x[elements_[i].first*2];
+                xe_[1] = _x[elements_[i].first*2+1];
+                xe_[2] = _x[elements_[i].second*2];
+                xe_[3] = _x[elements_[i].second*2+1];
 
                 Vec indexes(4);
                 indexes[0] = elements_[i].first*2;
@@ -103,7 +106,7 @@ namespace AOPT {
                 coeff[0] = ks_[i];
                 coeff[1] = ls_[i];
 
-                func_.hess_f(nodes, coeff, he_);
+                func_.hess_f(xe_, coeff, he_);
 
                 for(int i = 0; i <= 3; i++) {
                     for(int j = 0; j <= 3; j++) {
@@ -113,7 +116,6 @@ namespace AOPT {
 
 
             }
-            std::cout << _h << std::endl;
             //------------------------------------------------------//
         }
 
