@@ -66,7 +66,11 @@ namespace AOPT {
                 //Todo: check the convexity of the function in SpringElement2D.hh
                 //Hint: see if all the eigenvalues of the hessian matrix (Sparse) are >=0
                 //This is the sparse version and the eigenvalues can be calculated with Spectra library
+                for(int i = 0; i<int(n_unknowns); i++) {
+                    points[i] = rng_.get_random_nd_vector(1)[0];
+                }
 
+                msps.eval_hessian(points, sh);
                 //------------------------------------------------------//
 
             }
