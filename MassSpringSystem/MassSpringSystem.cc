@@ -26,7 +26,6 @@ namespace AOPT {
                 //Hint: randomly set the coordinates of the vertices,
                 //see if all the eigenvalues of the hessian matrix (Dense) are >=0
 
-                int order[n_vertices];
                 for(int i = 0; i<int(n_unknowns); i++) {
                     points[i] = rng_.get_random_nd_vector(1)[0];
                 }
