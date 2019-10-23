@@ -27,16 +27,8 @@ namespace AOPT {
                 //see if all the eigenvalues of the hessian matrix (Dense) are >=0
 
                 int order[n_vertices];
-                for(int i = 0; i<int(n_vertices); i++) {
-                    order[i] = i;
-                }
-
-                std::srand(time(0));
-                std::random_shuffle(order, order + int(n_vertices));
-
-                for(size_t i=0; i<n_vertices; ++i) {
-                    points[2*i] = sg_.point(order[i])[0];
-                    points[2*i+1] = sg_.point(order[i])[1];
+                for(int i = 0; i<int(n_unknowns); i++) {
+                    points[i] = rng_.get_random_nd_vector(1)[0];
                 }
 
                 Mat m;
@@ -47,7 +39,7 @@ namespace AOPT {
                 // std::cout << std::endl;
 
                 Eigen::VectorXcd eivals = m.eigenvalues();
-
+                std::cout << eivals << std::endl;
                 bool convex = true;
 
                 for(int i = 0; i < eivals.rows(); i++) {

@@ -53,7 +53,9 @@ namespace AOPT {
             //Todo: implement the hessian matrix and store in _H
             for(int i = 0; i <= 3; i++) {
                 for(int j = 0; j <= 3; j++) {
-                    _H(_x[4+i],_x[4+j]) += (i%2+j%2)?_coeffs[0]:0;
+                    int sign = (i < 2) ? 1 : -1;
+                    double entry = (i%2 == j%2)? (sign * _coeffs[0]) : 0;
+                    _H(i,j) = entry;
                 }
             }
             //------------------------------------------------------//
