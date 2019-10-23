@@ -37,7 +37,7 @@ namespace AOPT {
                 // std::cout << std::endl;
 
                 Eigen::VectorXcd eivals = h.eigenvalues();
-                std::cout << eivals << std::endl;
+
                 bool convex = true;
 
                 for(int i = 0; i < eivals.rows(); i++) {
@@ -47,9 +47,9 @@ namespace AOPT {
                 }
 
                 if(convex) {
-                    std::cout << "Problem is Convex" << std::endl;
+                    std::cout << "Problem is probably convex" << std::endl;
                 } else {
-                    std::cout << "Problem is Non-convex" << std::endl;
+                    std::cout << "Problem is probably non-convex" << std::endl;
                 }
 
                 //------------------------------------------------------//
@@ -71,6 +71,34 @@ namespace AOPT {
                 }
 
                 msps.eval_hessian(points, sh);
+                Spectra::SparseSymMatProd<double> op(sh);
+
+                Spectra::SymEigsSolver< double, Spectra::LARGEST_MAGN, Spectra::SparseSymMatProd<double> > eigs(&op, n_unknowns-1, n_unknowns);
+
+                // Initialize and compute
+                eigs.init();
+                int nconv = eigs.compute();
+                // Retrieve results
+                Eigen::VectorXcd eivals;
+                bool convex = true;
+
+                if(eigs.info() == Spectra::SUCCESSFUL)
+                    eivals = eigs.eigenvalues();
+
+                for(int i = 0; i < eivals.rows(); i++) {
+                    if(eivals[i].real() < -1e-10) {
+                        convex = false;
+                        std::cout << eivals[i].real() << std::endl;
+
+                    }
+                }
+
+                if(convex) {
+                    std::cout << "Problem is probably convex" << std::endl;
+                } else {
+                    std::cout << "Problem is probably non-convex" << std::endl;
+                }
+
                 //------------------------------------------------------//
 
             }
