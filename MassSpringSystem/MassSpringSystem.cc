@@ -110,9 +110,8 @@ namespace AOPT {
                     msp.add_spring_element(sg_.edge(i).first, sg_.edge(i).second, sg_.coefficient(i), sg_.length(i));
 
                 //------------------------------------------------------//
-                //Todo: check the convexity of the function in SpringElement2D.hh
-                //Hint: randomly set the coordinates of the vertices,
-                //see if all the eigenvalues of the hessian matrix (Dense) are >=0
+                //Todo: check the convexity of the function in SpringElement2DWithLength.hh
+                //Hint: see if all the eigenvalues of the hessian matrix (Dense) are >=0
 
                 for(int i = 0; i<int(n_unknowns); i++) {
                     points[i] = rng_.get_random_nd_vector(1)[0];
@@ -140,10 +139,6 @@ namespace AOPT {
                     std::cout << "Problem is Non-convex" << std::endl;
                 }
                 //------------------------------------------------------//
-                //Todo: check the convexity of the function in SpringElement2DWithLength.hh
-                //Hint: see if all the eigenvalues of the hessian matrix (Dense) are >=0
-
-                //------------------------------------------------------//
             } else if(_sparsity_type == SPARSE) {
                 MassSpringProblem2DSparse msps(se2, n_unknowns);
                 for(size_t i=0; i<sg_.n_edges(); ++i)
@@ -156,7 +151,38 @@ namespace AOPT {
                 //Todo: check the convexity of the function in SpringElement2DWithLength.hh
                 //Hint: see if all the eigenvalues of the hessian matrix (Sparse) are >=0
                 //This is the sparse version and the eigenvalues can be calculated with Spectra library
+                for(int i = 0; i<int(n_unknowns); i++) {
+                    points[i] = rng_.get_random_nd_vector(1)[0];
+                }
 
+                msps.eval_hessian(points, sh);
+                Spectra::SparseSymMatProd<double> op(sh);
+
+                Spectra::SymEigsSolver< double, Spectra::LARGEST_MAGN, Spectra::SparseSymMatProd<double> > eigs(&op, n_unknowns-1, n_unknowns);
+
+                // Initialize and compute
+                eigs.init();
+                int nconv = eigs.compute();
+                // Retrieve results
+                Eigen::VectorXcd eivals;
+                bool convex = true;
+
+                if(eigs.info() == Spectra::SUCCESSFUL)
+                    eivals = eigs.eigenvalues();
+
+                for(int i = 0; i < eivals.rows(); i++) {
+                    if(eivals[i].real() < -1e-10) {
+                        convex = false;
+                        std::cout << eivals[i].real() << std::endl;
+
+                    }
+                }
+
+                if(convex) {
+                    std::cout << "Problem is probably convex" << std::endl;
+                } else {
+                    std::cout << "Problem is probably non-convex" << std::endl;
+                }
                 //------------------------------------------------------//
             }
         }
