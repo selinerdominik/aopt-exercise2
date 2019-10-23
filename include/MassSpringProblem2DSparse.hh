@@ -99,7 +99,7 @@ namespace AOPT {
             //hint: use triplet in eigen to setup the sparse matrix
             std::vector<T> tripletList;
             for (int i = 0; i < elements_.size(); i++) {
-                xe_.setZero()
+                xe_.setZero();
                 he_.setZero();
                 xe_[0] = _x[elements_[i].first*2];
                 xe_[1] = _x[elements_[i].first*2+1];
