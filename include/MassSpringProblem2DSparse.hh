@@ -92,7 +92,35 @@ namespace AOPT {
             //------------------------------------------------------//
             //TODO: assemble local hessian matrix to the global sparse hessian matrix
             //hint: use triplet in eigen to setup the sparse matrix
+            std::vector<T> tripletList;
+            for (int i = 0; i < elements_.size(); i++) {
+                Vec nodes(4);
+                he_.setZero();
+                nodes[0] = _x[elements_[i].first*2];
+                nodes[1] = _x[elements_[i].first*2+1];
+                nodes[2] = _x[elements_[i].second*2];
+                nodes[3] = _x[elements_[i].second*2+1];
 
+                Vec indexes(4);
+                indexes[0] = elements_[i].first*2;
+                indexes[1] = elements_[i].first*2+1;
+                indexes[2] = elements_[i].second*2;
+                indexes[3] = elements_[i].second*2+1;
+
+                coeff[0] = ks_[i];
+                coeff[1] = ls_[i];
+
+                func_.hess_f(nodes, coeff, he_);
+
+                for(int i = 0; i <= 3; i++) {
+                    for(int j = 0; j <= 3; j++) {
+                        tripletList.push_back(T(indexes[i],indexes[j],he_(i,j)));
+                    }
+                }
+
+            }
+
+            _h.setFromTriplets(tripletList.begin(), tripletList.end());
             //------------------------------------------------------//
         }
 
