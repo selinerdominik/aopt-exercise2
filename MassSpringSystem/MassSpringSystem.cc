@@ -30,14 +30,13 @@ namespace AOPT {
                     points[i] = rng_.get_random_nd_vector(1)[0];
                 }
 
-                Mat m;
-                msp.eval_hessian(points, m);
+                msp.eval_hessian(points, h);
 
                 // std::cout << "Eigenvalues:";
                 // std::cout << m.eigenvalues();
                 // std::cout << std::endl;
 
-                Eigen::VectorXcd eivals = m.eigenvalues();
+                Eigen::VectorXcd eivals = h.eigenvalues();
                 std::cout << eivals << std::endl;
                 bool convex = true;
 
@@ -87,14 +86,13 @@ namespace AOPT {
                     points[i] = rng_.get_random_nd_vector(1)[0];
                 }
 
-                Mat m;
-                msp.eval_hessian(points, m);
+                msp.eval_hessian(points, h);
 
                 // std::cout << "Eigenvalues:";
                 // std::cout << m.eigenvalues();
                 // std::cout << std::endl;
 
-                Eigen::VectorXcd eivals = m.eigenvalues();
+                Eigen::VectorXcd eivals = h.eigenvalues();
                 std::cout << eivals << std::endl;
                 bool convex = true;
 
