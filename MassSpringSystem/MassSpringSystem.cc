@@ -41,7 +41,7 @@ namespace AOPT {
                 bool convex = true;
 
                 for(int i = 0; i < eivals.rows(); i++) {
-                    if(eivals[i].real() < 0.) {
+                    if(eivals[i].real() < -1e-10) {
                         convex = false;
                     }
                 }
@@ -129,7 +129,7 @@ namespace AOPT {
                 bool convex = true;
 
                 for(int i = 0; i < eivals.rows(); i++) {
-                    if(eivals[i].real() < 0.) {
+                    if(eivals[i].real() < -1e-10) {
                         convex = false;
                     }
                 }
