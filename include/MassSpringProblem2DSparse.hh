@@ -70,16 +70,21 @@ namespace AOPT {
             //------------------------------------------------------//
             //TODO: assemble local gradient vector to the global one
             for (int i = 0; i < elements_.size(); i++) {
-                Vec nodes(4);
-                nodes[0] = _x[elements_[i].first*2];
-                nodes[1] = _x[elements_[i].first*2+1];
-                nodes[2] = _x[elements_[i].second*2];
-                nodes[3] = _x[elements_[i].second*2+1];
+                ge_.setZero();
+                xe_.setZero();
+                xe_[0] = _x[elements_[i].first*2];
+                xe_[1] = _x[elements_[i].first*2+1];
+                xe_[2] = _x[elements_[i].second*2];
+                xe_[3] = _x[elements_[i].second*2+1];
 
                 coeff[0] = ks_[i];
                 coeff[1] = ls_[i];
 
-                func_.grad_f(nodes, coeff, _g);
+                func_.grad_f(xe_, coeff, ge_);
+                _g(elements_[i].first*2) += ge_(0);
+                _g(elements_[i].first*2+1) += ge_(1);
+                _g(elements_[i].second*2) += ge_(2);
+                _g(elements_[i].second*2+1) += ge_(3);
             }
             //------------------------------------------------------//
         }

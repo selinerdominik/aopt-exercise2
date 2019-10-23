@@ -75,8 +75,10 @@ namespace AOPT {
                 coeff[1] = ls_[i];
 
                 func_.grad_f(xe_, coeff, ge_);
-
-                _g += ge_;
+                _g(elements_[i].first*2) += ge_(0);
+                _g(elements_[i].first*2+1) += ge_(1);
+                _g(elements_[i].second*2) += ge_(2);
+                _g(elements_[i].second*2+1) += ge_(3);
             }
             //------------------------------------------------------//
         }
