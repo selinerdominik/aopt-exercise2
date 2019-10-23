@@ -74,6 +74,41 @@ namespace AOPT {
         } else if(_spring_element_type == WITH_LENGTH){
             SpringElement2DWithLength se2;
             if(_sparsity_type == DENSE) {
+                MassSpringProblem2D msp(se2, n_unknowns);
+                for(size_t i=0; i<sg_.n_edges(); ++i)
+                    msp.add_spring_element(sg_.edge(i).first, sg_.edge(i).second, sg_.coefficient(i), sg_.length(i));
+
+                //------------------------------------------------------//
+                //Todo: check the convexity of the function in SpringElement2D.hh
+                //Hint: randomly set the coordinates of the vertices,
+                //see if all the eigenvalues of the hessian matrix (Dense) are >=0
+
+                for(int i = 0; i<int(n_unknowns); i++) {
+                    points[i] = rng_.get_random_nd_vector(1)[0];
+                }
+
+                Mat m;
+                msp.eval_hessian(points, m);
+
+                // std::cout << "Eigenvalues:";
+                // std::cout << m.eigenvalues();
+                // std::cout << std::endl;
+
+                Eigen::VectorXcd eivals = m.eigenvalues();
+                std::cout << eivals << std::endl;
+                bool convex = true;
+
+                for(int i = 0; i < eivals.rows(); i++) {
+                    if(eivals[i].real() < 0.) {
+                        convex = false;
+                    }
+                }
+
+                if(convex) {
+                    std::cout << "Problem is Convex" << std::endl;
+                } else {
+                    std::cout << "Problem is Non-convex" << std::endl;
+                }
                 //------------------------------------------------------//
                 //Todo: check the convexity of the function in SpringElement2DWithLength.hh
                 //Hint: see if all the eigenvalues of the hessian matrix (Dense) are >=0
