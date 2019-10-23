@@ -142,9 +142,7 @@ namespace AOPT {
         // Adding points
         for(int i = 0; i <= n_grid_x_; i++) {
             for(int j = 0; j <= n_grid_y_; j++) {
-                Eigen::Vector2d p;
-                p << i, j;
-                sg_.add_vertex(p);
+                sg_.add_vertex(rng_.get_random_nd_vector(2));
             }
         }
 
